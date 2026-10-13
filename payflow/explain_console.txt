@@ -1,0 +1,149 @@
+--------------
+-- Du lieu gia lap de tai lap EXPLAIN, KHONG phai giao dich PayFlow thuc.
+--------------
+
+--------------
+-- Chay tren server thu rieng. Script tao schema rieng, khong xoa schema san co.
+--------------
+
+--------------
+CREATE DATABASE `payflow_benchmark`
+--------------
+
+--------------
+CREATE TABLE Transactions (
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    amount DECIMAL(15,2),
+    transaction_type VARCHAR(20),
+    created_at DATETIME
+) ENGINE=InnoDB
+--------------
+
+--------------
+CREATE TABLE digits (n INT PRIMARY KEY)
+--------------
+
+--------------
+INSERT INTO digits VALUES (0),(1),(2),(3),(4),(5),(6),(7),(8),(9)
+--------------
+
+--------------
+INSERT INTO Transactions (user_id, amount, transaction_type, created_at)
+SELECT MOD(seq.n,10000)+1, CAST(MOD(seq.n,100000)+1 AS DECIMAL(15,2)),
+       ELT(MOD(seq.n,3)+1,'DEPOSIT','WITHDRAW','TRANSFER'),
+       DATE_ADD('2024-01-01 00:00:00', INTERVAL MOD(seq.n,1096) DAY)
+FROM (
+    SELECT a.n+10*b.n+100*c.n+1000*d.n+10000*e.n+100000*f.n AS n
+    FROM digits a CROSS JOIN digits b CROSS JOIN digits c
+    CROSS JOIN digits d CROSS JOIN digits e CROSS JOIN digits f
+) seq
+--------------
+
+--------------
+ANALYZE TABLE Transactions
+--------------
+
++--------------------------------+---------+----------+----------+
+| Table                          | Op      | Msg_type | Msg_text |
++--------------------------------+---------+----------+----------+
+| payflow_benchmark.transactions | analyze | status   | OK       |
++--------------------------------+---------+----------+----------+
+--------------
+SELECT VERSION() AS mysql_version, COUNT(*) AS fixture_rows FROM Transactions
+--------------
+
++---------------+--------------+
+| mysql_version | fixture_rows |
++---------------+--------------+
+| 8.4.11        |      1000000 |
++---------------+--------------+
+--------------
+SELECT 'BEFORE_INDEX_LEGACY' AS phase
+--------------
+
++---------------------+
+| phase               |
++---------------------+
+| BEFORE_INDEX_LEGACY |
++---------------------+
+--------------
+EXPLAIN SELECT SUM(amount) FROM Transactions
+WHERE transaction_type='DEPOSIT' AND YEAR(created_at)=2026 AND MONTH(created_at)=6
+--------------
+
++----+-------------+--------------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+| id | select_type | table        | partitions | type | possible_keys | key  | key_len | ref  | rows   | filtered | Extra       |
++----+-------------+--------------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+|  1 | SIMPLE      | Transactions | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 997290 |    10.00 | Using where |
++----+-------------+--------------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+--------------
+CREATE INDEX idx_type_date ON Transactions(transaction_type,created_at)
+--------------
+
+--------------
+ANALYZE TABLE Transactions
+--------------
+
++--------------------------------+---------+----------+----------+
+| Table                          | Op      | Msg_type | Msg_text |
++--------------------------------+---------+----------+----------+
+| payflow_benchmark.transactions | analyze | status   | OK       |
++--------------------------------+---------+----------+----------+
+--------------
+SELECT 'AFTER_INDEX_OPTIMIZED' AS phase
+--------------
+
++-----------------------+
+| phase                 |
++-----------------------+
+| AFTER_INDEX_OPTIMIZED |
++-----------------------+
+--------------
+EXPLAIN SELECT SUM(amount) FROM Transactions
+WHERE transaction_type='DEPOSIT'
+AND created_at >= '2026-06-01 00:00:00' AND created_at < '2026-07-01 00:00:00'
+--------------
+
++----+-------------+--------------+------------+-------+---------------+---------------+---------+------+-------+----------+-----------------------+
+| id | select_type | table        | partitions | type  | possible_keys | key           | key_len | ref  | rows  | filtered | Extra                 |
++----+-------------+--------------+------------+-------+---------------+---------------+---------+------+-------+----------+-----------------------+
+|  1 | SIMPLE      | Transactions | NULL       | range | idx_type_date | idx_type_date | 89      | NULL | 16908 |   100.00 | Using index condition |
++----+-------------+--------------+------------+-------+---------------+---------------+---------+------+-------+----------+-----------------------+
+--------------
+SELECT 'MEASURED_OPTIMIZED' AS phase
+--------------
+
++--------------------+
+| phase              |
++--------------------+
+| MEASURED_OPTIMIZED |
++--------------------+
+--------------
+EXPLAIN ANALYZE SELECT SUM(amount) FROM Transactions
+WHERE transaction_type='DEPOSIT'
+AND created_at >= '2026-06-01 00:00:00' AND created_at < '2026-07-01 00:00:00'
+--------------
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| EXPLAIN                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| -> Aggregate: sum(transactions.amount)  (cost=9300 rows=1) (actual time=26.6..26.6 rows=1 loops=1)
+    -> Index range scan on Transactions using idx_type_date over (transaction_type = 'DEPOSIT' AND '2026-06-01 00:00:00' <= created_at < '2026-07-01 00:00:00'), with index condition: ((transactions.transaction_type = 'DEPOSIT') and (transactions.created_at >= TIMESTAMP'2026-06-01 00:00:00') and (transactions.created_at < TIMESTAMP'2026-07-01 00:00:00'))  (cost=7609 rows=16908) (actual time=3.96..25.8 rows=9120 loops=1)
+ |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+--------------
+SELECT old_report.total AS legacy_total, new_report.total AS optimized_total,
+       old_report.total <=> new_report.total AS totals_match
+FROM (SELECT SUM(amount) AS total FROM Transactions
+WHERE transaction_type='DEPOSIT' AND YEAR(created_at)=2026 AND MONTH(created_at)=6) old_report
+CROSS JOIN (SELECT SUM(amount) AS total FROM Transactions
+WHERE transaction_type='DEPOSIT'
+AND created_at >= '2026-06-01 00:00:00' AND created_at < '2026-07-01 00:00:00') new_report
+--------------
+
++--------------+-----------------+--------------+
+| legacy_total | optimized_total | totals_match |
++--------------+-----------------+--------------+
+| 456144560.00 |    456144560.00 |            1 |
++--------------+-----------------+--------------+

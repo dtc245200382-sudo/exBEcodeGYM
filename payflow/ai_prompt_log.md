@@ -24,7 +24,17 @@ Người dùng gửi toàn bộ đề PayFlow trong file đính kèm, trong ng�
 
 ## Trạng thái kiểm chứng
 
-Đã rà soát tĩnh cú pháp và tính tương đương của khoảng thời gian đối với DATETIME trong schema. Chưa chạy trên MySQL, chưa có bộ dữ liệu 5 triệu dòng, ảnh Console hoặc benchmark. Học viên cần chạy EXPLAIN trước/sau trên dữ liệu đại diện, chụp kết quả và bổ sung số đo thực. Script có truy vấn đối chiếu tổng; kết quả kỳ vọng totals_match = 1 không phải kết quả đã đo.
+Đã chạy trên MySQL 8.4.11 với 1.000.000 dòng giả lập trong server riêng. Log thực tế ở explain_console.txt và script ở benchmark_fixture.sql: ALL → range, key = idx_type_date, rows 997290 → 16908. EXPLAIN ANALYZE đọc 9120 dòng. Hai tổng là 456144560.00, totals_match = 1. Không có dữ liệu 5 triệu giao dịch thật hoặc benchmark sản xuất.
+
+## Trao đổi thực tế bổ sung trong phiên này
+
+Prompt của người dùng (trích nguyên văn phản hồi chấm bài):
+
+> Tuy nhiên, điểm yếu lớn nhất là thiếu bằng chứng thực tế về hiệu quả tối ưu hóa (kết quả EXPLAIN từ console) và việc không cung cấp nhật ký các prompt AI đã sử dụng theo yêu cầu của đề bài.
+
+Phản hồi của AI: kiểm tra MySQL cài sẵn, tạo server thử tách biệt, sinh 1.000.000 giao dịch giả lập, chạy EXPLAIN trước/sau và EXPLAIN ANALYZE. Giải thích rằng rows trong EXPLAIN là ước lượng (997290 và 16908), còn 9120 là số dòng thực đọc trong EXPLAIN ANALYZE. So sánh hai tổng trên cùng dữ liệu để kiểm tra không đổi kết quả tài chính.
+
+Đây là prompt thực tế yêu cầu bổ sung qua phản hồi chấm bài, không phải một câu hỏi kỹ thuật độc lập về B-tree do học viên tự đặt. Nhật ký không bổ sung các câu hỏi chưa từng xảy ra để lấy điểm.
 
 ## Quy tắc dùng AI của đề
 
