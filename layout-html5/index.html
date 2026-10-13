@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo layout với HTML5 và CSS</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 16px;
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: #333;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            grid-template-rows: 64px 64px 142px 142px 64px;
+            grid-template-areas:
+                "header header"
+                "nav nav"
+                "section aside"
+                "article aside"
+                "footer footer";
+            gap: 6px;
+            width: 440px;
+            max-width: 100%;
+            padding: 7px;
+            border: 2px solid #888;
+            background-color: #ddd;
+        }
+
+        .layout > * {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+            border: 2px solid #999;
+            background-color: white;
+            text-align: center;
+        }
+
+        header {
+            grid-area: header;
+        }
+
+        nav {
+            grid-area: nav;
+        }
+
+        section {
+            grid-area: section;
+        }
+
+        article {
+            grid-area: article;
+        }
+
+        aside {
+            grid-area: aside;
+        }
+
+        footer {
+            grid-area: footer;
+        }
+
+        h1,
+        h2,
+        p {
+            margin: 0;
+            font-size: clamp(20px, 5vw, 32px);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <header>
+            <h1>&lt;header&gt;</h1>
+        </header>
+        <nav aria-label="Vùng điều hướng">
+            <p>&lt;nav&gt;</p>
+        </nav>
+        <section aria-labelledby="section-title">
+            <h2 id="section-title">&lt;section&gt;</h2>
+        </section>
+        <article aria-labelledby="article-title">
+            <h2 id="article-title">&lt;article&gt;</h2>
+        </article>
+        <aside aria-label="Nội dung bên cạnh">
+            <p>&lt;aside&gt;</p>
+        </aside>
+        <footer>
+            <p>&lt;footer&gt;</p>
+        </footer>
+    </div>
+</body>
+</html>
