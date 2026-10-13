@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gallery responsive sử dụng Bootstrap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+    <style>
+        .gallery {
+            border: 1px solid #ccc;
+            transition: border-color 0.2s;
+        }
+
+        .gallery:hover {
+            border-color: #777;
+        }
+
+        .gallery img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 3 / 2;
+            object-fit: cover;
+        }
+
+        .gallery a:focus-visible {
+            display: block;
+            outline: 3px solid #0d6efd;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <main class="container py-4">
+        <h1 class="h2 mb-3">Responsive Image Gallery</h1>
+        <p class="lead mb-4">Thay đổi kích thước cửa sổ trình duyệt để xem cách bố cục tự điều chỉnh.</p>
+
+        <!-- Bootstrap chia cột: mobile 12/12, tablet 6/12, desktop 3/12. -->
+        <div class="row g-3">
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="gallery h-100">
+                    <a href="https://demo.codegym.vn/web/15/gallery/img_fjords.jpg" target="_blank" rel="noopener noreferrer">
+                        <img class="img-fluid" src="https://demo.codegym.vn/web/15/gallery/img_fjords.jpg"
+                             alt="Mỏm đá Trolltunga nhìn ra hồ và núi ở Na Uy" width="600" height="400">
+                    </a>
+                    <div class="p-3 text-center">Phong cảnh Trolltunga, Na Uy</div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="gallery h-100">
+                    <a href="https://demo.codegym.vn/web/15/gallery/img_forest.jpg" target="_blank" rel="noopener noreferrer">
+                        <img class="img-fluid" src="https://demo.codegym.vn/web/15/gallery/img_forest.jpg"
+                             alt="Lối đi trong khu rừng xanh" width="600" height="400" loading="lazy">
+                    </a>
+                    <div class="p-3 text-center">Một góc rừng xanh yên bình</div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="gallery h-100">
+                    <a href="https://demo.codegym.vn/web/15/gallery/img_lights.jpg" target="_blank" rel="noopener noreferrer">
+                        <img class="img-fluid" src="https://demo.codegym.vn/web/15/gallery/img_lights.jpg"
+                             alt="Cực quang trên bầu trời đêm" width="600" height="400" loading="lazy">
+                    </a>
+                    <div class="p-3 text-center">Vẻ đẹp của ánh sáng cực quang</div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="gallery h-100">
+                    <a href="https://demo.codegym.vn/web/15/gallery/img_mountains.jpg" target="_blank" rel="noopener noreferrer">
+                        <img class="img-fluid" src="https://demo.codegym.vn/web/15/gallery/img_mountains.jpg"
+                             alt="Dãy núi và hồ nước trong xanh" width="600" height="400" loading="lazy">
+                    </a>
+                    <div class="p-3 text-center">Núi non và mặt hồ trong xanh</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <p class="text-secondary">Màn hình nhỏ: 1 ảnh mỗi dòng. Từ 576px: 2 ảnh mỗi dòng. Từ 992px: 4 ảnh mỗi dòng.</p>
+            <p class="small text-secondary mb-0">Ảnh từ bản mẫu CodeGym. Nhấn vào ảnh để xem kích thước gốc.</p>
+        </div>
+    </main>
+</body>
+</html>
