@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MetricsHub — Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="flex-navbar" aria-label="Main navigation">
+            <a class="brand" href="#dashboard"><span class="brand-icon">M</span> MetricsHub</a>
+            <div class="nav-links">
+                <a href="#dashboard" data-en="Overview" data-de="Übersicht" aria-current="page">Overview</a>
+                <a href="#dashboard" data-en="Analytics dashboard" data-de="VeryLongGermanWordForDashboard">Analytics dashboard</a>
+                <a href="#pricing" data-en="Pricing" data-de="Preisgestaltung">Pricing</a>
+            </div>
+            <div class="nav-actions">
+                <button id="language-toggle" type="button" aria-label="Switch navigation language to German">DE</button>
+                <span class="profile" aria-label="Profile: Minh An">MA</span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container py-4 py-lg-5">
+        <div class="page-heading" id="dashboard">
+            <div><p class="eyebrow">YOUR WORKSPACE AT A GLANCE</p><h1>Every metric. One clear view.</h1></div>
+            <span class="data-label">Sample dashboard data</span>
+        </div>
+
+        <!-- Mọi widget là con trực tiếp của grid-dashboard, không có wrapper .column. -->
+        <div class="grid-dashboard" aria-label="Analytics widgets">
+            <section class="widget widget-main" aria-labelledby="revenue-title">
+                <div class="widget-heading"><h2 id="revenue-title">Revenue overview</h2><span class="period">Last 7 months</span></div>
+                <p class="metric">$48,520</p><p class="trend">↗ 12.8% <span>vs. previous period</span></p>
+                <svg class="revenue-chart" viewBox="0 0 520 270" role="img" aria-labelledby="chart-title chart-desc">
+                    <title id="chart-title">Sample revenue trend</title>
+                    <desc id="chart-desc">Illustrative revenue rises from January to July with a dip in April. The chart is mock data.</desc>
+                    <defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3976d8" stop-opacity=".25"/><stop offset="100%" stop-color="#3976d8" stop-opacity="0"/></linearGradient></defs>
+                    <g stroke="#e7edf5"><path d="M20 45H500 M20 100H500 M20 155H500 M20 210H500"/></g>
+                    <path d="M20 190L100 150L180 165L260 115L340 85L420 100L500 40V215H20Z" fill="url(#area)"/>
+                    <path d="M20 190L100 150L180 165L260 115L340 85L420 100L500 40" stroke="#3976d8" stroke-width="4" fill="none" stroke-linejoin="round"/>
+                    <g fill="#748195" font-family="Arial" font-size="13"><text x="12" y="245">Jan</text><text x="92" y="245">Feb</text><text x="172" y="245">Mar</text><text x="252" y="245">Apr</text><text x="332" y="245">May</text><text x="412" y="245">Jun</text><text x="486" y="245">Jul</text></g>
+                </svg>
+                <p class="chart-caption">A steady month, with room to grow.</p>
+            </section>
+
+            <section class="widget" aria-labelledby="users-title">
+                <h2 id="users-title">Active users</h2><p class="metric">8,240</p>
+                <p class="trend">↗ 6.4% <span>this month</span></p>
+                <div class="spark-bars" aria-hidden="true"><span style="--bar:35%"></span><span style="--bar:55%"></span><span style="--bar:45%"></span><span style="--bar:70%"></span><span style="--bar:60%"></span><span style="--bar:85%"></span><span style="--bar:100%"></span></div>
+            </section>
+
+            <section class="widget widget-highlight" aria-labelledby="conversion-title">
+                <h2 id="conversion-title">Conversion rate</h2><p class="metric">4.8%</p>
+                <p class="trend">↗ 0.6 points <span>this month</span></p>
+                <p class="small-note">More visits are turning into meaningful action.</p>
+            </section>
+
+            <section class="widget widget-wide" aria-labelledby="channels-title">
+                <h2 id="channels-title">Top acquisition channels</h2>
+                <div class="channel"><span>Organic search</span><div class="channel-track"><span style="width:72%"></span></div><strong>72%</strong></div>
+                <div class="channel"><span>Direct traffic</span><div class="channel-track"><span style="width:48%"></span></div><strong>48%</strong></div>
+                <div class="channel"><span>Social</span><div class="channel-track"><span style="width:31%"></span></div><strong>31%</strong></div>
+                <p class="small-note">Independent sample scores, not a percentage breakdown.</p>
+            </section>
+
+            <section class="widget" aria-labelledby="health-title">
+                <h2 id="health-title">Workspace health</h2>
+                <div class="health-indicator"><span class="health-dot"></span><strong>All systems ready</strong></div>
+                <p class="small-note">Your sample reports are up to date.</p>
+            </section>
+        </div>
+
+        <!-- Bảng giá dùng Bootstrap; không có CSS riêng để chia cột bảng giá. -->
+        <section id="pricing" class="mt-5" aria-labelledby="pricing-title">
+            <div class="mb-4"><p class="eyebrow">PLANS FOR EVERY STAGE</p><h2 id="pricing-title" class="h3 fw-bold">A little clarity goes a long way.</h2><p class="text-secondary">Illustrative plans for the layout exercise.</p></div>
+            <div class="row g-4">
+                <div class="col-12 col-md-4">
+                    <div class="card h-100 border-0 shadow-sm"><div class="card-body p-4 d-flex flex-column">
+                        <h3 class="h5">Starter</h3><p class="text-secondary">For your first dashboard.</p><p class="display-6 fw-bold">$0<span class="fs-6 fw-normal text-secondary"> / month</span></p>
+                        <ul class="text-secondary ps-3"><li>One workspace</li><li>Basic reports</li><li>Community resources</li></ul>
+                        <a href="#dashboard" class="btn btn-outline-primary mt-auto">Explore Starter</a>
+                    </div></div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card h-100 border-primary shadow-sm"><div class="card-body p-4 d-flex flex-column">
+                        <h3 class="h5">Growth <span class="badge text-bg-primary ms-1">Popular</span></h3><p class="text-secondary">For a team finding its rhythm.</p><p class="display-6 fw-bold">$19<span class="fs-6 fw-normal text-secondary"> / month</span></p>
+                        <ul class="text-secondary ps-3"><li>Five workspaces</li><li>Advanced reports</li><li>Team collaboration</li></ul>
+                        <a href="#dashboard" class="btn btn-primary mt-auto">Explore Growth</a>
+                    </div></div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card h-100 border-0 shadow-sm"><div class="card-body p-4 d-flex flex-column">
+                        <h3 class="h5">Enterprise</h3><p class="text-secondary">For a bigger picture.</p><p class="display-6 fw-bold">Custom</p>
+                        <ul class="text-secondary ps-3"><li>Flexible workspaces</li><li>Custom reporting</li><li>Dedicated support</li></ul>
+                        <a href="#dashboard" class="btn btn-outline-primary mt-auto">Explore Enterprise</a>
+                    </div></div>
+                </div>
+            </div>
+        </section>
+        <footer class="text-center text-secondary small mt-5">MetricsHub · Flexbox + CSS Grid + Bootstrap · Layout demonstration</footer>
+    </main>
+    <script>
+        const toggle = document.getElementById('language-toggle');
+        let language = 'en';
+        toggle.addEventListener('click', () => {
+            language = language === 'en' ? 'de' : 'en';
+            document.querySelectorAll('.nav-links a').forEach((link) => {
+                link.textContent = link.dataset[language];
+                link.lang = language;
+            });
+            toggle.textContent = language === 'en' ? 'DE' : 'EN';
+            toggle.setAttribute('aria-label', `Switch navigation language to ${language === 'en' ? 'German' : 'English'}`);
+        });
+    </script>
+</body>
+</html>

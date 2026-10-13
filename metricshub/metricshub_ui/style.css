@@ -1,0 +1,308 @@
+:root {
+    --ink: #203048;
+    --muted: #788496;
+    --accent: #3976d8;
+}
+
+body {
+    color: var(--ink);
+    background: #f4f6fa;
+}
+
+.site-header {
+    border-bottom: 1px solid #e2e7ef;
+    background: white;
+}
+
+/* Navbar: phân bố theo nội dung, có wrap để xử lý nhãn dài. */
+.flex-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 18px 24px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    font-size: 21px;
+    font-weight: 750;
+    text-decoration: none;
+}
+
+.brand-icon {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    color: white;
+    background: var(--accent);
+    font-size: 20px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 320px;
+    flex-wrap: wrap;
+    min-width: 0;
+    gap: 12px 24px;
+}
+
+.nav-links a {
+    max-width: 100%;
+    color: #647086;
+    font-size: 14px;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.nav-links a:hover,
+.nav-links a[aria-current="page"] {
+    color: var(--accent);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-actions button {
+    border: 1px solid #dce3ee;
+    border-radius: 8px;
+    padding: 7px 10px;
+    background: white;
+    color: var(--ink);
+    font-size: 13px;
+}
+
+.profile {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: #51705f;
+    background: #e3eee6;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.eyebrow {
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 650;
+    letter-spacing: 1.6px;
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 750;
+    letter-spacing: -1px;
+}
+
+.data-label,
+.period {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* Bento: widget anh em trực tiếp, bố cục hai chiều và span. */
+.grid-dashboard {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.widget {
+    min-width: 0;
+    border: 1px solid #e2e7f0;
+    border-radius: 16px;
+    padding: 24px;
+    background: white;
+}
+
+.widget-main {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.widget-wide {
+    grid-column: span 2;
+}
+
+.widget-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.widget h2 {
+    margin: 0 0 18px;
+    font-size: 15px;
+    font-weight: 650;
+}
+
+.widget-heading h2 {
+    margin-bottom: 0;
+}
+
+.metric {
+    margin: 20px 0 6px;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 750;
+    letter-spacing: -1px;
+}
+
+.trend {
+    margin: 0;
+    color: #247855;
+    font-size: 13px;
+}
+
+.trend span {
+    margin-left: 6px;
+    color: var(--muted);
+}
+
+.revenue-chart {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 28px;
+}
+
+.chart-caption,
+.small-note {
+    margin: 16px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.spark-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 50px;
+    margin-top: 20px;
+}
+
+.spark-bars span {
+    flex: 1;
+    height: var(--bar);
+    border-radius: 4px 4px 0 0;
+    background: #b9cfee;
+}
+
+.widget-highlight {
+    background: #edf4ff;
+}
+
+.channel {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin-top: 16px;
+    font-size: 13px;
+}
+
+.channel > span {
+    flex: 0 1 110px;
+}
+
+.channel-track {
+    flex: 1 1 100px;
+    min-width: 0;
+    height: 7px;
+    border-radius: 8px;
+    background: #eef2f7;
+}
+
+.channel-track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #759bdc;
+}
+
+.health-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+}
+
+.health-dot {
+    flex-shrink: 0;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #34996a;
+}
+
+@media (max-width: 991px) {
+    .grid-dashboard {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .widget-main {
+        grid-column: span 2;
+        grid-row: auto;
+    }
+
+    .widget-wide {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 575px) {
+    .flex-navbar {
+        padding: 16px;
+    }
+
+    .nav-links {
+        order: 3;
+        flex-basis: 100%;
+        justify-content: flex-start;
+        gap: 12px 16px;
+    }
+
+    .grid-dashboard {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .widget-main,
+    .widget-wide {
+        grid-column: auto;
+        grid-row: auto;
+    }
+
+    .widget {
+        padding: 20px;
+    }
+}
