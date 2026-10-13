@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thực hành tạo menu ngang</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #menu {
+            height: 30px;
+            padding: 0;
+            margin: 0;
+            background-color: black;
+            border: 1px solid #cdcdcd;
+        }
+
+        #menu ul,
+        #menu li {
+            padding: 0;
+            margin: 0;
+        }
+
+        #menu li {
+            position: relative;
+            float: left;
+            list-style: none;
+        }
+
+        #menu li a {
+            display: block;
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            color: white;
+            background-color: black;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        #menu ul ul {
+            position: absolute;
+            top: 30px;
+            left: 15px;
+            width: 250px;
+            visibility: hidden;
+            z-index: 1;
+        }
+
+        #menu ul ul li {
+            float: none;
+        }
+
+        #menu ul ul li a {
+            width: 240px;
+            padding-left: 10px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        #menu li a:hover,
+        #menu li:focus-within > a {
+            background-color: red;
+        }
+
+        #menu li:hover > ul,
+        #menu li:focus-within > ul {
+            visibility: visible;
+        }
+
+        #menu a:focus-visible {
+            outline: 2px solid white;
+            outline-offset: -2px;
+        }
+    </style>
+</head>
+<body>
+    <div id="menu">
+        <ul>
+            <li><a href="#">Sem 1</a>
+                <ul>
+                    <li><a href="#">Computing Fundamental</a></li>
+                    <li><a href="#">C Programming</a></li>
+                    <li><a href="#">Building Dynamic Website</a></li>
+                    <li><a href="#">MS Transact-SQL</a></li>
+                    <li><a href="#">Project</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Sem 2</a>
+                <ul>
+                    <li><a href="#">Cloud Computing</a></li>
+                    <li><a href="#">APJ - I</a></li>
+                    <li><a href="#">APJ - II</a></li>
+                    <li><a href="#">APJ - III</a></li>
+                    <li><a href="#">eProject</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Sem 3</a></li>
+            <li><a href="#">Sem 4</a></li>
+        </ul>
+    </div>
+</body>
+</html>
