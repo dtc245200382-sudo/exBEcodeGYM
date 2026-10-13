@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giao diện Facebook giản lược</title>
+    <style>
+        :root {
+            --blue: #1877f2;
+            --background: #f0f2f5;
+            --text: #1c1e21;
+            --muted: #65676b;
+            --line: #e4e6eb;
+        }
+
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--background); color: var(--text); font-family: Arial, sans-serif; }
+        button, input { font: inherit; }
+        a { color: inherit; text-decoration: none; }
+        button { cursor: pointer; }
+        a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+            height: 64px; display: flex; align-items: center; justify-content: space-between;
+            gap: 20px; padding: 0 24px; background: white; box-shadow: 0 1px 5px #0002;
+        }
+        .brand-search, .header-actions { display: flex; align-items: center; gap: 12px; }
+        .logo { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: var(--blue); color: white; font-size: 38px; font-weight: bold; }
+        .search { width: 210px; border: 0; border-radius: 24px; padding: 12px 16px; background: var(--background); }
+        .header-nav { display: flex; align-self: stretch; }
+        .header-nav a { display: grid; place-items: center; min-width: 105px; padding: 0 16px; color: var(--muted); font-weight: bold; }
+        .header-nav a:hover { background: var(--background); }
+        .header-nav .active { color: var(--blue); border-bottom: 3px solid var(--blue); }
+        .round { display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: var(--line); }
+        .avatar { display: grid; place-items: center; flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; background: #d8e9ff; color: #18549e; font-weight: bold; }
+        .avatar.green { background: #d9eee2; color: #28764b; }
+        .avatar.orange { background: #ffead1; color: #946020; }
+
+        .sidebar { position: fixed; top: 88px; bottom: 24px; width: 245px; overflow-y: auto; }
+        .sidebar-left { left: 20px; }
+        .sidebar-right { right: 20px; }
+        .sidebar h2 { margin: 16px 12px; color: var(--muted); font-size: 17px; }
+        .sidebar ul { list-style: none; padding: 0; margin: 0; }
+        .sidebar li a { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 8px 12px; border-radius: 8px; font-size: 15px; font-weight: bold; }
+        .sidebar li a:hover { background: var(--line); }
+        .icon { width: 32px; text-align: center; font-size: 24px; }
+        .sidebar hr { margin: 16px 12px; border: 0; border-top: 1px solid #d5d8de; }
+        .online-avatar { position: relative; }
+        .online-avatar::after { content: ''; position: absolute; right: 0; bottom: 0; width: 11px; height: 11px; border: 2px solid var(--background); border-radius: 50%; background: #31a24c; }
+        .sidebar-note { padding: 0 12px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+
+        main { max-width: 670px; margin: 88px auto 40px; padding: 0 20px; }
+        .stories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+        .story { display: flex; align-items: flex-end; height: 150px; padding: 18px; border-radius: 12px; color: white; background: linear-gradient(145deg, #92bbcd, #234d62); box-shadow: 0 2px 4px #0001; font-weight: bold; }
+        .story:nth-child(2) { background: linear-gradient(145deg, #a6c5a1, #315f46); }
+        .story:nth-child(3) { background: linear-gradient(145deg, #e7bd8b, #85572d); }
+        .card { margin-bottom: 20px; border-radius: 10px; background: white; box-shadow: 0 1px 3px #0002; }
+        .composer { padding: 16px; }
+        .composer-top { display: flex; align-items: center; gap: 12px; }
+        .composer-prompt { flex: 1; margin: 0; border-radius: 24px; padding: 13px 18px; background: var(--background); color: var(--muted); }
+        .composer-types { display: flex; justify-content: space-around; gap: 12px; margin-top: 16px; border-top: 1px solid var(--line); padding-top: 16px; color: var(--muted); font-size: 14px; }
+        .post-header { display: flex; align-items: center; gap: 12px; padding: 16px 16px 0; }
+        .post-header h2 { margin: 0 0 5px; font-size: 15px; }
+        .post-header p { margin: 0; color: var(--muted); font-size: 12px; }
+        .post-text { margin: 16px; line-height: 1.6; }
+        .post-art { display: block; width: 100%; height: auto; }
+        .post-summary { display: flex; justify-content: space-between; padding: 14px 16px; color: var(--muted); font-size: 14px; }
+        .post-actions { display: flex; margin: 0 16px; border-top: 1px solid var(--line); padding: 6px 0; }
+        .post-actions button { flex: 1; border: 0; border-radius: 6px; padding: 12px 4px; background: white; color: var(--muted); font-weight: bold; }
+        .post-actions button:hover { background: var(--background); }
+        .post-actions button[aria-pressed="true"] { color: var(--blue); }
+        .comment { display: none; gap: 10px; border-top: 1px solid var(--line); padding: 14px 16px; }
+        .comment.open { display: flex; }
+        .comment input { width: 100%; border: 0; border-radius: 20px; padding: 12px; background: var(--background); }
+        footer { color: var(--muted); text-align: center; font-size: 12px; line-height: 1.6; }
+
+        @media (min-width: 1101px) and (max-width: 1250px) {
+            .sidebar { width: 200px; }
+            main { max-width: 600px; }
+        }
+        @media (max-width: 1100px) {
+            .sidebar-right { display: none; }
+            main { margin-left: 275px; margin-right: 20px; max-width: none; }
+            .header-nav a { min-width: 75px; }
+            .search { width: 160px; }
+        }
+        @media (max-width: 800px) {
+            .sidebar-left { display: none; }
+            main { max-width: 670px; margin: 84px auto 30px; padding: 0 12px; }
+            .header { padding: 0 12px; gap: 8px; }
+            .search { display: none; }
+            .header-nav a { min-width: 0; padding: 0 12px; font-size: 13px; }
+            .header-actions .round { display: none; }
+            .story { height: 120px; padding: 12px; font-size: 14px; }
+            .composer-types { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand-search">
+            <a class="logo" href="#bang-tin" aria-label="Trang chủ">f</a>
+            <input class="search" type="search" placeholder="Tìm kiếm trên Facebook" aria-label="Tìm kiếm">
+        </div>
+        <nav class="header-nav" aria-label="Điều hướng chính">
+            <a href="#bang-tin" class="active" aria-current="page">Trang chủ</a>
+            <a href="#stories">Tin</a>
+            <a href="#bai-viet-2">Cộng đồng</a>
+        </nav>
+        <div class="header-actions">
+            <span class="round" role="img" aria-label="Tin nhắn">✉</span>
+            <span class="round" role="img" aria-label="Thông báo">♧</span>
+            <span class="avatar" aria-label="Minh An">MA</span>
+        </div>
+    </header>
+
+    <aside class="sidebar sidebar-left" aria-label="Sidebar điều hướng">
+        <ul>
+            <li><a href="#bang-tin"><span class="avatar">MA</span> Minh An</a></li>
+            <li><a href="#stories"><span class="icon">👥</span> Bạn bè</a></li>
+            <li><a href="#bai-viet-2"><span class="icon">◉</span> Nhóm</a></li>
+            <li><a href="#bai-viet-1"><span class="icon">▣</span> Bảng tin</a></li>
+            <li><a href="#stories"><span class="icon">▤</span> Tin của bạn</a></li>
+        </ul>
+        <hr>
+        <h2>Lối tắt của bạn</h2>
+        <ul>
+            <li><a href="#bai-viet-2"><span class="avatar green">CG</span> Cộng đồng CodeGym</a></li>
+            <li><a href="#bai-viet-1"><span class="avatar orange">DL</span> Góc du lịch</a></li>
+        </ul>
+        <p class="sidebar-note">Bài thực hành HTML và CSS · Giao diện minh hoạ</p>
+    </aside>
+
+    <main id="bang-tin">
+        <section class="stories" id="stories" aria-label="Tin nổi bật">
+            <div class="story">Tin của bạn</div>
+            <div class="story">Lan Phương</div>
+            <div class="story">Hoàng Nam</div>
+        </section>
+
+        <section class="card composer" aria-label="Khung chia sẻ">
+            <div class="composer-top">
+                <span class="avatar">MA</span>
+                <p class="composer-prompt">Minh An ơi, bạn đang nghĩ gì thế?</p>
+            </div>
+            <div class="composer-types"><span>🔴 Video trực tiếp</span><span>🖼 Ảnh / video</span><span>🙂 Cảm xúc</span></div>
+        </section>
+
+        <article class="card" id="bai-viet-1">
+            <div class="post-header">
+                <span class="avatar green">LP</span>
+                <div><h2>Lan Phương</h2><p>2 giờ trước · Công khai</p></div>
+            </div>
+            <p class="post-text">Một buổi sáng yên bình. Đôi khi chỉ cần đi chậm lại một chút để thấy những điều đẹp quanh mình. 🌿</p>
+            <svg class="post-art" viewBox="0 0 700 320" role="img" aria-label="Minh hoạ phong cảnh đồi núi và hồ nước">
+                <rect width="700" height="320" fill="#dcebf0"/>
+                <circle cx="555" cy="60" r="30" fill="#f6d690"/>
+                <path d="M0 230 L160 80 L320 220 L460 100 L700 225 V320 H0Z" fill="#94b8aa"/>
+                <path d="M0 250 L110 180 L260 240 L420 175 L700 250 V320 H0Z" fill="#628b75"/>
+                <path d="M0 265 Q350 220 700 265 V320 H0Z" fill="#7faeb9"/>
+                <path d="M280 288 H420 M320 306 H480" stroke="#b7d4db" stroke-width="3"/>
+            </svg>
+            <div class="post-summary"><span class="like-count">24 lượt thích</span><span>Bài viết minh hoạ</span></div>
+            <div class="post-actions"><button type="button" class="like" aria-pressed="false">♡ Thích</button><button type="button" class="comment-toggle" aria-expanded="false" aria-controls="comment-1">Bình luận</button></div>
+            <div class="comment" id="comment-1"><input aria-label="Bình luận bài của Lan Phương" placeholder="Viết bình luận…"></div>
+        </article>
+
+        <article class="card" id="bai-viet-2">
+            <div class="post-header"><span class="avatar orange">CG</span><div><h2>Cộng đồng CodeGym</h2><p>4 giờ trước · Công khai</p></div></div>
+            <p class="post-text">Hôm nay cùng luyện tập bố cục với HTML và CSS: header cố định, sidebar và nội dung chính. Mỗi bài tập nhỏ là một bước tiến mới! 💻</p>
+            <div class="post-summary"><span class="like-count">18 lượt thích</span><span>Bài viết minh hoạ</span></div>
+            <div class="post-actions"><button type="button" class="like" aria-pressed="false">♡ Thích</button><button type="button" class="comment-toggle" aria-expanded="false" aria-controls="comment-2">Bình luận</button></div>
+            <div class="comment" id="comment-2"><input aria-label="Bình luận bài CodeGym" placeholder="Viết bình luận…"></div>
+        </article>
+        <footer>Giao diện giản lược phục vụ bài thực hành.<br>Các tương tác chỉ diễn ra trên trang, không gửi dữ liệu.</footer>
+    </main>
+
+    <aside class="sidebar sidebar-right" aria-label="Sidebar liên hệ">
+        <h2>Người liên hệ</h2>
+        <ul>
+            <li><a href="#bai-viet-1"><span class="avatar green online-avatar">LP</span> Lan Phương</a></li>
+            <li><a href="#stories"><span class="avatar orange online-avatar">HN</span> Hoàng Nam</a></li>
+            <li><a href="#bai-viet-2"><span class="avatar online-avatar">TH</span> Thu Hà</a></li>
+        </ul>
+        <hr><h2>Nhóm trò chuyện</h2>
+        <ul><li><a href="#bai-viet-2"><span class="avatar green">FE</span> Học HTML &amp; CSS</a></li></ul>
+    </aside>
+
+    <script>
+        document.querySelectorAll('.like').forEach((button) => {
+            button.addEventListener('click', () => {
+                const liked = button.getAttribute('aria-pressed') === 'true';
+                button.setAttribute('aria-pressed', String(!liked));
+                button.textContent = liked ? '♡ Thích' : '♥ Đã thích';
+                const count = button.closest('article').querySelector('.like-count');
+                count.textContent = `${parseInt(count.textContent, 10) + (liked ? -1 : 1)} lượt thích`;
+            });
+        });
+        document.querySelectorAll('.comment-toggle').forEach((button) => {
+            button.addEventListener('click', () => {
+                const comment = document.getElementById(button.getAttribute('aria-controls'));
+                const expanded = comment.classList.toggle('open');
+                button.setAttribute('aria-expanded', String(expanded));
+                if (expanded) comment.querySelector('input').focus();
+            });
+        });
+    </script>
+</body>
+</html>
