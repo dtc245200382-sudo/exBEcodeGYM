@@ -1,0 +1,76 @@
+BÀI TẬP: CHUYỂN ĐỔI ERD SANG MÔ HÌNH QUAN HỆ
+
+BƯỚC 1: XÁC ĐỊNH CÁC THỰC THỂ
+
+ERD gồm 5 thực thể:
+1. PHIEUXUAT: SoPX, NgayXuat. Khóa chính: SoPX.
+2. VATTU: MaVTU, TenVTU. Khóa chính: MaVTU.
+3. PHIEUNHAP: SoPN, NgayNhap. Khóa chính: SoPN.
+4. DONDH: SoDH, NgayDH. Khóa chính: SoDH.
+5. NHACC: MaNCC, TenNCC, DiaChi, SDT. Khóa chính: MaNCC.
+   SDT là thuộc tính đa trị.
+
+BƯỚC 2: CHUYỂN ĐỔI CÁC MỐI QUAN HỆ
+
+- PHIEUXUAT - VATTU: N-N.
+  Tạo CTPHIEUXUAT(SoPX, MaVTU, DGXuat, SLXuat).
+- PHIEUNHAP - VATTU: N-N.
+  Tạo CTPHIEUNHAP(SoPN, MaVTU, DGNhap, SLNhap).
+- DONDH - VATTU: N-N.
+  Tạo CTDONDH(SoDH, MaVTU).
+- NHACC - DONDH: 1-N.
+  Thêm MaNCC làm khóa ngoại trong DONDH.
+
+Mỗi bảng trung gian có khóa chính ghép từ hai khóa ngoại.
+ERD không có quan hệ 1-1.
+
+BƯỚC 3: CHUYỂN ĐỔI THUỘC TÍNH ĐA TRỊ
+
+SDT của NHACC được biểu diễn bằng hình oval kép.
+Tách thành bảng NHACC_SDT(MaNCC, SDT):
+- Khóa chính ghép: (MaNCC, SDT).
+- Khóa ngoại: MaNCC tham chiếu NHACC(MaNCC).
+
+BƯỚC 4: DANH SÁCH CÁC BẢNG SAU CHUYỂN ĐỔI
+
+1. PHIEUXUAT(SoPX, NgayXuat)
+   PK: SoPX
+
+2. VATTU(MaVTU, TenVTU)
+   PK: MaVTU
+
+3. PHIEUNHAP(SoPN, NgayNhap)
+   PK: SoPN
+
+4. NHACC(MaNCC, TenNCC, DiaChi)
+   PK: MaNCC
+
+5. DONDH(SoDH, NgayDH, MaNCC)
+   PK: SoDH
+   FK: MaNCC -> NHACC(MaNCC)
+
+6. CTPHIEUXUAT(SoPX, MaVTU, DGXuat, SLXuat)
+   PK: (SoPX, MaVTU)
+   FK: SoPX -> PHIEUXUAT(SoPX)
+       MaVTU -> VATTU(MaVTU)
+
+7. CTPHIEUNHAP(SoPN, MaVTU, DGNhap, SLNhap)
+   PK: (SoPN, MaVTU)
+   FK: SoPN -> PHIEUNHAP(SoPN)
+       MaVTU -> VATTU(MaVTU)
+
+8. CTDONDH(SoDH, MaVTU)
+   PK: (SoDH, MaVTU)
+   FK: SoDH -> DONDH(SoDH)
+       MaVTU -> VATTU(MaVTU)
+
+9. NHACC_SDT(MaNCC, SDT)
+   PK: (MaNCC, SDT)
+   FK: MaNCC -> NHACC(MaNCC)
+
+KẾT QUẢ
+
+5 bảng thực thể + 3 bảng quan hệ N-N + 1 bảng thuộc tính đa trị = 9 bảng.
+CTDONDH không thêm số lượng hoặc đơn giá vì ERD không thể hiện các thuộc tính này.
+
+Chú thích: PK = khóa chính; FK = khóa ngoại.
