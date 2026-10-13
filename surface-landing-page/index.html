@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Surface — Bootstrap Landing Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .product-image {
+            width: 100%;
+            aspect-ratio: 5 / 4;
+            object-fit: contain;
+            background-color: #f5f5f7;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Bài thực hành giao diện; hình ảnh lấy từ trang Microsoft Surface. -->
+    <nav class="navbar navbar-expand-md bg-white border-bottom" aria-label="Main navigation">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="#home">
+                <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill="#f25022" d="M0 0h11v11H0z"/>
+                    <path fill="#7fba00" d="M13 0h11v11H13z"/>
+                    <path fill="#00a4ef" d="M0 13h11v11H0z"/>
+                    <path fill="#ffb900" d="M13 13h11v11H13z"/>
+                </svg>
+                <span class="fw-semibold text-secondary">Microsoft</span>
+                <span class="border-start ps-3 ms-2 fw-bold text-dark">Surface</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarLinks" aria-controls="navbarLinks"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarLinks">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products">Devices</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#accessories">Accessories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://www.microsoft.com/en-us/surface" target="_blank" rel="noopener noreferrer">Official website</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-light" id="home">
+        <div class="container py-5">
+            <div class="row align-items-center g-4">
+                <div class="col-12 col-md-6">
+                    <p class="text-uppercase text-secondary small fw-semibold">Microsoft Surface</p>
+                    <h1 class="display-4 fw-semibold">A device for your next idea.</h1>
+                    <p class="lead my-4">Explore Surface laptops, tablets and accessories. Find a design that fits the way you like to work and create.</p>
+                    <a class="btn btn-primary rounded-0 px-4 py-2" href="#products">Explore devices</a>
+                </div>
+                <div class="col-12 col-md-6">
+                    <img class="hero-image" src="https://images.ctfassets.net/jy9s7k22hbg4/0j00Tu86R8WHiyybR0Fz4/6dfb1a960373a9cfc19859a12f0a9b10/COM_Pro.jpg"
+                         alt="Surface Pro with its kickstand open and keyboard beside it" width="600" height="480">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container py-5" id="products">
+        <h2 class="text-center mb-2">Explore the Surface collection</h2>
+        <p class="text-center text-secondary mb-4">Choose a category to learn more on Microsoft's website.</p>
+        <div class="row g-4">
+            <div class="col-12 col-md-4">
+                <div class="card h-100 border-0">
+                    <img class="card-img-top product-image" src="https://images.ctfassets.net/jy9s7k22hbg4/0j00Tu86R8WHiyybR0Fz4/6dfb1a960373a9cfc19859a12f0a9b10/COM_Pro.jpg"
+                         alt="Surface Pro tablet" width="600" height="480" loading="lazy">
+                    <div class="card-body px-0 d-flex flex-column">
+                        <h3 class="h4">Surface Pro</h3>
+                        <p>A tablet design with a built-in kickstand. Explore the available models and configurations.</p>
+                        <a class="fw-semibold mt-auto" href="https://www.microsoft.com/en-us/surface/devices/surface-pro" target="_blank" rel="noopener noreferrer">Discover Surface Pro &rsaquo;</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card h-100 border-0">
+                    <img class="card-img-top product-image" src="https://images.ctfassets.net/jy9s7k22hbg4/6R6Gs5sI2K0wCumOevbTGZ/2a5d319c996a4e77985ed93f5dac2ace/COM_Laptop.jpg"
+                         alt="Violet Surface Laptop" width="600" height="480" loading="lazy">
+                    <div class="card-body px-0 d-flex flex-column">
+                        <h3 class="h4">Surface Laptop</h3>
+                        <p>A familiar laptop shape with a refined finish. See the choices in the Surface laptop family.</p>
+                        <a class="fw-semibold mt-auto" href="https://www.microsoft.com/en-us/surface/devices/surface-laptop" target="_blank" rel="noopener noreferrer">Discover Surface Laptop &rsaquo;</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4" id="accessories">
+                <div class="card h-100 border-0">
+                    <img class="card-img-top product-image" src="https://images.ctfassets.net/jy9s7k22hbg4/4J96tmHbLNQf9TV2VYNtwJ/965c492538bebf372e7aa29da0902091/COM_504_Surface_Mouse_Black.jpg"
+                         alt="Black Surface Mouse" width="600" height="480" loading="lazy">
+                    <div class="card-body px-0 d-flex flex-column">
+                        <h3 class="h4">Surface accessories</h3>
+                        <p>Complete your setup with accessories. Browse the official collection for details and compatibility.</p>
+                        <a class="fw-semibold mt-auto" href="https://www.microsoft.com/en-us/surface/accessories" target="_blank" rel="noopener noreferrer">Explore accessories &rsaquo;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-light border-top py-4">
+        <div class="container d-flex flex-column flex-sm-row justify-content-between gap-2">
+            <p class="small text-secondary mb-0">Educational Bootstrap recreation. Product images and trademarks belong to Microsoft.</p>
+            <a class="small" href="#home">Back to top &uarr;</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"></script>
+</body>
+</html>
