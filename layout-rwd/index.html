@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Layout</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .page {
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 16px);
+        }
+
+        .navbar {
+            display: flex;
+            align-items: stretch;
+            flex-wrap: wrap;
+            background-color: #222;
+        }
+
+        .navbar a {
+            display: flex;
+            align-items: center;
+            min-height: 56px;
+            padding: 0 16px;
+            color: #aaa;
+            text-decoration: none;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+        }
+
+        .navbar .active,
+        .navbar a:hover {
+            background-color: #080808;
+            color: white;
+        }
+
+        .navbar .login {
+            margin-left: auto;
+        }
+
+        .row {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 16.6667%;
+            padding: 22px 16px;
+            background-color: #f1f1f1;
+            text-align: center;
+        }
+
+        .sidebar-left a {
+            display: block;
+            margin-bottom: 16px;
+            color: #337ab7;
+            text-decoration: none;
+        }
+
+        .sidebar-left a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            width: 66.6666%;
+            min-width: 0;
+            padding: 22px 16px;
+            background-color: white;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: 38px;
+        }
+
+        h2 {
+            margin: 22px 0 10px;
+            font-size: 28px;
+        }
+
+        p {
+            margin: 0 0 14px;
+            line-height: 1.5;
+            color: #111;
+        }
+
+        hr {
+            margin: 24px 0;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+
+        .ad {
+            margin-bottom: 22px;
+            padding: 24px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+        }
+
+        .footer {
+            padding: 22px 16px;
+            background-color: #555;
+            color: white;
+            text-align: center;
+        }
+
+        a:focus-visible {
+            outline: 2px solid #337ab7;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 767px) {
+            .row {
+                flex-direction: column;
+            }
+
+            .sidebar,
+            .content {
+                width: 100%;
+            }
+
+            .sidebar-left {
+                display: flex;
+                justify-content: center;
+                gap: 28px;
+                padding: 16px;
+            }
+
+            .sidebar-left a {
+                margin-bottom: 0;
+            }
+
+            .sidebar-right {
+                display: flex;
+                gap: 16px;
+                padding: 16px;
+            }
+
+            .ad {
+                flex: 1;
+                min-width: 0;
+                margin-bottom: 0;
+            }
+
+            .content {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar a {
+                min-height: 44px;
+                padding: 0 10px;
+                font-size: 14px;
+            }
+
+            .navbar .login {
+                margin-left: 0;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="navbar" role="navigation" aria-label="Main navigation">
+            <a class="logo" href="#welcome">Logo</a>
+            <a class="active" href="#welcome" aria-current="page">Home</a>
+            <a href="#welcome">About</a>
+            <a href="#test">Projects</a>
+            <a href="#footer">Contact</a>
+            <a class="login" href="#">↪ Login</a>
+        </div>
+
+        <div class="row">
+            <div class="sidebar sidebar-left">
+                <a href="#welcome">Link</a>
+                <a href="#test">Link</a>
+                <a href="#footer">Link</a>
+            </div>
+
+            <div class="content">
+                <h1 id="welcome">Welcome</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+                    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <hr>
+                <h2 id="test">Test</h2>
+                <p>Lorem ipsum...</p>
+            </div>
+
+            <div class="sidebar sidebar-right">
+                <div class="ad">ADS</div>
+                <div class="ad">ADS</div>
+            </div>
+        </div>
+
+        <div class="footer" id="footer">Footer Text</div>
+    </div>
+</body>
+</html>
