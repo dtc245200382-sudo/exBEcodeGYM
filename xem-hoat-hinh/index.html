@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phim hoạt hình — Góc xem của bé</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Arial, sans-serif; color: #303030; background: #fff; }
+        button, input, select { font: inherit; }
+        button, select { cursor: pointer; }
+        a { color: inherit; text-decoration: none; }
+        a:hover { color: #d92935; font-weight: bold; }
+        a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #287ab6; outline-offset: 3px; }
+        [hidden] { display: none !important; }
+
+        .header { position: fixed; top: 0; left: 0; right: 0; z-index: 10; height: 80px; background: #f5f5f5; border-top: 3px solid #ddd; border-bottom: 1px solid #eee; }
+        .header-inner { max-width: 1200px; height: 100%; margin: auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .logo { white-space: nowrap; font-family: Georgia, serif; font-size: 30px; font-style: italic; font-weight: bold; }
+        .logo span { margin-left: 4px; padding: 5px 10px; border-radius: 12px; color: white; background: #dc2636; }
+        .header small { color: #777; }
+        .page { max-width: 1200px; margin: 80px auto 0; padding: 12px; }
+        .head-link { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 0; padding: 14px 10px; background: #f5f5f5; }
+        .head-link a { padding: 0 16px; border-right: 1px solid #777; font-size: 15px; }
+        .head-link a:last-child { border: 0; }
+        .head-link a.active { color: #cf2634; font-weight: bold; }
+        .toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+        .toolbar label { font-size: 14px; }
+        .toolbar input { flex: 1; min-width: 170px; padding: 11px 13px; border: 1px solid #ddd; border-radius: 5px; }
+        .toolbar select { max-width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background: white; }
+        .content { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(0, 2fr); gap: 24px; align-items: start; }
+        .left-content { padding: 8px; background: #f8f8fd; }
+        .list-title { margin: 4px 4px 14px; font-size: 18px; }
+        .video-card { display: block; width: 100%; margin-bottom: 15px; padding: 6px; border: 2px solid transparent; border-radius: 5px; background: white; color: #333; text-align: left; }
+        .video-card:hover { border-color: #ebb9be; color: #c82333; }
+        .video-card[aria-pressed="true"] { border-color: #d92935; }
+        .video-card img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 3px; background: #e4ebdf; }
+        .video-card strong { display: block; margin: 8px 0 5px; font-size: 15px; line-height: 1.4; }
+        .video-card small { display: block; color: #737373; font-size: 12px; line-height: 1.6; }
+        .player-box { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #151515; }
+        .player-box iframe, .player-box video { display: block; width: 100%; height: 100%; border: 0; }
+        .player-title { margin: 16px 0 8px; font-size: 23px; line-height: 1.4; }
+        .metadata { color: #777; font-size: 14px; line-height: 1.6; }
+        .description { line-height: 1.75; text-align: justify; }
+        .favorite { padding: 10px 14px; border: 1px solid #d92935; border-radius: 5px; background: white; color: #c82333; }
+        .favorite[aria-pressed="true"] { background: #fff0f1; }
+        .source { display: inline-block; margin: 16px 12px 16px 0; color: #276fa1; font-size: 14px; }
+        .note { padding: 14px; border-left: 3px solid #dfb65b; background: #fff9e9; font-size: 13px; line-height: 1.7; }
+        .empty { padding: 20px 10px; color: #777; line-height: 1.6; }
+        .footer { margin-top: 24px; padding: 24px 15px; text-align: center; background: #f8f8fd; font-size: 13px; line-height: 1.7; }
+        .footer p { margin: 5px 0; }
+        .error { color: #b0202d; font-size: 14px; }
+
+        @media (max-width: 760px) {
+            .content { grid-template-columns: 1fr; }
+            .right-content { grid-row: 1; }
+            .video-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+            .video-card { margin: 0; }
+            .header small { display: none; }
+            .head-link a { padding: 0 10px; font-size: 13px; }
+        }
+        @media (max-width: 420px) {
+            .logo { font-size: 26px; }
+            .video-list { grid-template-columns: 1fr; }
+            .toolbar select { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-inner">
+            <a class="logo" href="#" aria-label="Phim hoạt hình">Phim<span>HoạtHình</span></a>
+            <small>Góc giải trí và khám phá</small>
+        </div>
+    </div>
+    <div class="page">
+        <div class="head-link" role="navigation" aria-label="Chuyên mục">
+            <a href="#danh-sach" class="active" data-filter="all">Tất cả video</a>
+            <a href="#danh-sach" data-filter="cartoon">Phim hoạt hình</a>
+            <a href="#danh-sach" data-filter="favorite">Video yêu thích</a>
+            <a href="#gioi-thieu">Giới thiệu</a>
+        </div>
+        <div class="toolbar">
+            <label for="search">Tìm video</label>
+            <input id="search" type="search" placeholder="Nhập tên video…">
+            <label for="sort">Sắp xếp</label>
+            <select id="sort"><option value="latest">Mới thêm vào danh sách</option><option value="popular">Được chọn nhiều nhất trên thiết bị</option></select>
+        </div>
+        <div class="content">
+            <div class="left-content" id="danh-sach">
+                <h2 class="list-title">Danh sách video</h2>
+                <div id="video-list" class="video-list"></div>
+                <p id="empty" class="empty" hidden>Không tìm thấy video. Hãy đổi từ khoá hoặc chuyên mục.</p>
+            </div>
+            <div class="right-content">
+                <div class="player-box">
+                    <iframe id="youtube-player" title="Video được chọn" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <video id="html5-player" controls playsinline preload="metadata" hidden>
+                        <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+                        Trình duyệt của bạn không hỗ trợ thẻ video.
+                    </video>
+                </div>
+                <p id="video-error" class="error" hidden>Không tải được video mẫu. Bạn có thể thử lại hoặc mở nguồn bên dưới.</p>
+                <h1 id="player-title" class="player-title"></h1>
+                <p id="metadata" class="metadata"></p>
+                <p id="description" class="description"></p>
+                <button id="favorite-button" class="favorite" type="button" aria-pressed="false">♡ Thêm vào yêu thích</button>
+                <br><a id="source-link" class="source" target="_blank" rel="noopener noreferrer">Mở video tại nguồn</a>
+                <div class="note">Trang không chèn quảng cáo. Video YouTube có thể có quảng cáo hoặc giới hạn nhúng; chất lượng phát phụ thuộc nguồn và đường truyền. Nếu iframe không phát, hãy dùng liên kết nguồn. Khi mở file trực tiếp mà YouTube báo lỗi, thử phục vụ trang qua localhost.</div>
+                <noscript><p>Bật JavaScript để chọn video, tìm kiếm và sử dụng danh sách yêu thích.</p></noscript>
+            </div>
+        </div>
+        <div class="footer" id="gioi-thieu">
+            <p>© 2026 Phim Hoạt Hình · Bài thực hành HTML, CSS và JavaScript.</p>
+            <p>Video thuộc các nhà phát hành tương ứng; trang chỉ nhúng hoặc dẫn tới nguồn, không lưu bản sao phim.</p>
+            <p>Danh sách có phim tiếng Việt, nội dung khám phá và video mẫu HTML5. Lượt chọn là thống kê trên thiết bị này.</p>
+        </div>
+    </div>
+    <script>
+        const videos = [
+            { id: 'doraemon', title: 'Doraemon — Ngày nghỉ của Doraemon', category: 'cartoon', kind: 'youtube', youtubeId: '99k-J4LVdfs', publisher: 'POPS Kids', language: 'Tiếng Việt', added: '2026-10-13', description: 'Một tập Doraemon tiếng Việt từ kênh POPS Kids. Chọn video trong danh sách để thay đổi nội dung đang xem.' },
+            { id: 'environment', title: 'Cùng tìm hiểu: Bảo vệ môi trường', category: 'learning', kind: 'youtube', youtubeId: 'gfJyrnSIHPw', publisher: 'VTV7', language: 'Tiếng Việt', added: '2026-10-12', description: 'Video giáo dục về chủ đề bảo vệ môi trường. Ngày hiển thị là ngày thêm vào danh sách của bài thực hành, không phải ngày phát hành.' },
+            { id: 'skills', title: 'Kỹ năng an toàn mùa dịch', category: 'learning', kind: 'youtube', youtubeId: 'KjbpepqYquU', publisher: 'VTV7 KIDS', language: 'Tiếng Việt', added: '2026-10-11', description: 'Một video trong chương trình Kỹ năng an toàn cho trẻ của VTV7 KIDS, được dẫn từ nguồn phát hành.' },
+            { id: 'flower', title: 'Hoa trong vườn — mẫu phát HTML5', category: 'demo', kind: 'html5', publisher: 'MDN — video mẫu CC0', language: 'Không có lời thoại', added: '2026-10-10', source: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4', description: 'Clip thiên nhiên ngắn để thực hành thẻ video và các nút điều khiển HTML5. Đây là video mẫu, không phải phim hoạt hình lồng tiếng.' }
+        ];
+        const list = document.getElementById('video-list');
+        const search = document.getElementById('search');
+        const sort = document.getElementById('sort');
+        const iframe = document.getElementById('youtube-player');
+        const html5 = document.getElementById('html5-player');
+        const favoriteButton = document.getElementById('favorite-button');
+        let selectedId = null;
+        let filter = 'all';
+        let state = { favorites: [], counts: {} };
+        try {
+            const saved = JSON.parse(localStorage.getItem('cartoon-demo-state'));
+            if (saved && Array.isArray(saved.favorites) && saved.counts && typeof saved.counts === 'object') state = saved;
+        } catch (error) { /* Trang vẫn hoạt động nếu bộ nhớ bị chặn. */ }
+        function saveState() {
+            try { localStorage.setItem('cartoon-demo-state', JSON.stringify(state)); } catch (error) { /* Giữ trạng thái trong phiên. */ }
+        }
+        function countFor(id) { return Math.max(0, Number(state.counts[id]) || 0); }
+        function normalize(value) { return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd'); }
+        function sourceFor(video) { return video.kind === 'youtube' ? `https://www.youtube.com/watch?v=${video.youtubeId}` : video.source; }
+        function renderList() {
+            const query = normalize(search.value.trim());
+            const matches = videos.filter((video) => normalize(video.title).includes(query)
+                && (filter === 'all' || (filter === 'favorite' ? state.favorites.includes(video.id) : video.category === filter)));
+            matches.sort((a, b) => sort.value === 'popular' ? countFor(b.id) - countFor(a.id) || b.added.localeCompare(a.added) : b.added.localeCompare(a.added));
+            list.replaceChildren();
+            matches.forEach((video) => {
+                const button = document.createElement('button');
+                button.type = 'button'; button.className = 'video-card';
+                button.setAttribute('aria-pressed', String(video.id === selectedId));
+                const image = document.createElement('img'); image.alt = ''; image.loading = 'lazy';
+                image.src = video.kind === 'youtube' ? `https://i.ytimg.com/vi/${video.youtubeId}/hqdefault.jpg` : 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270"><rect width="480" height="270" fill="#dbead3"/><path d="M240 240V130" stroke="#51854c" stroke-width="14"/><g fill="#efadbb"><circle cx="240" cy="90" r="38"/><circle cx="195" cy="125" r="38"/><circle cx="285" cy="125" r="38"/><circle cx="215" cy="163" r="38"/><circle cx="265" cy="163" r="38"/></g><circle cx="240" cy="129" r="25" fill="#ffd364"/></svg>');
+                const title = document.createElement('strong'); title.textContent = video.title;
+                const meta = document.createElement('small'); meta.textContent = `${video.publisher} · ${countFor(video.id)} lượt chọn`;
+                button.append(image, title, meta);
+                button.addEventListener('click', () => selectVideo(video.id, true));
+                list.append(button);
+            });
+            document.getElementById('empty').hidden = matches.length > 0;
+        }
+        function updateFavorite() {
+            const favorite = state.favorites.includes(selectedId);
+            favoriteButton.setAttribute('aria-pressed', String(favorite));
+            favoriteButton.textContent = favorite ? '♥ Đã lưu yêu thích' : '♡ Thêm vào yêu thích';
+        }
+        function selectVideo(id, countSelection = false) {
+            const video = videos.find((item) => item.id === id);
+            if (!video) return;
+            const changed = selectedId !== id;
+            selectedId = id;
+            if (countSelection) { state.counts[id] = countFor(id) + 1; saveState(); }
+            if (changed) {
+                html5.pause();
+                document.getElementById('video-error').hidden = true;
+                if (video.kind === 'youtube') {
+                    html5.hidden = true; iframe.hidden = false;
+                    iframe.title = video.title;
+                    iframe.src = `https://www.youtube-nocookie.com/embed/${video.youtubeId}?rel=0`;
+                } else {
+                    iframe.removeAttribute('src'); iframe.hidden = true; html5.hidden = false;
+                }
+            }
+            document.getElementById('player-title').textContent = video.title;
+            document.getElementById('metadata').textContent = `${video.publisher} · ${video.language} · Thêm vào danh sách: ${video.added}`;
+            document.getElementById('description').textContent = video.description;
+            document.getElementById('source-link').href = sourceFor(video);
+            updateFavorite(); renderList();
+        }
+        search.addEventListener('input', renderList);
+        sort.addEventListener('change', renderList);
+        document.querySelectorAll('[data-filter]').forEach((link) => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault(); filter = link.dataset.filter;
+                document.querySelectorAll('[data-filter]').forEach((item) => item.classList.toggle('active', item === link));
+                renderList();
+            });
+        });
+        favoriteButton.addEventListener('click', () => {
+            state.favorites = state.favorites.includes(selectedId) ? state.favorites.filter((id) => id !== selectedId) : [...state.favorites, selectedId];
+            saveState(); updateFavorite(); renderList();
+        });
+        html5.addEventListener('error', () => { document.getElementById('video-error').hidden = false; });
+        html5.querySelector('source').addEventListener('error', () => { document.getElementById('video-error').hidden = false; });
+        selectVideo(videos[0].id);
+    </script>
+</body>
+</html>
